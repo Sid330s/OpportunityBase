@@ -1,0 +1,25 @@
+modules = ["python-3.12"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["libyaml", "awscli"]
+
+[workflows]
+
+[[workflows.workflow]]
+name = "setup"
+mode = "sequential"
+author = 34709945
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./setup.sh"
+
+[[workflows.workflow]]
+name = "save"
+mode = "sequential"
+author = 34709945
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./save.sh"
