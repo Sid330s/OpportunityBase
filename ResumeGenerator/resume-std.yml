@@ -1,0 +1,63 @@
+name: Siddharth Kale
+location: Baner, Pune, India
+email: siddharth.kale918@gmail.com
+phone: +91 976523XXXX
+linkedin: https://www.linkedin.com/in/siddharth-kale-936922174/
+linkedin_text: SiddharthKale
+github: https://github.com/Sid330s
+github_text: Sid330s
+
+ 
+experience:
+  - company: SIEMENS
+    title: Software Engineer
+    location: Pune, India
+    dates: Jan 2025 – Present
+    highlights:
+      - Increased productivity of knowledge workers by 30\%, as measured by their time spent on searching for information, through the implementation of Teamcenter AI Chat Interface (Java, Python, JavaScript, React.js, Node.js, AWS Bedrock). \href{https://blogs.sw.siemens.com/teamcenter/teamcenter-ai-chat/}{Blog} \href{https://www.youtube.com/watch?v=RKU0PrYNhDg}{Demo}
+      - Achieved a 27\% increase in user engagement by implementing a robust context management system that tracked user interactions, allowing for personalized responses and improved conversation flow. (AWS DynamoDB, Java, Python, Redux)
+      
+
+  - company: SIEMENS
+    title: Software Engineer Associate
+    location: Pune, India
+    dates: July 2022 – Dec 2024
+    highlights:
+      - Developed an efficient document ingestion, parsing and indexing system that utilized a message queue for asynchronous processing, resulting in a 43\% increase in throughput. (Python, Apache Tika, Elasticsearch, Opensearch, RabbitMQ)
+      - Accomplished a 40\% improvement in resource utilization, as measured by reduced cloud resource consumption, by developing a containerized deployment automation and leveraging a microservices architecture for Teamcenter X. (AWS, GCP, Docker, Kubernetes, Terraform, Ansible, BitBucket CI/CD)
+      - Enhanced collaboration between technical teams and business stakeholders, as measured by a 20\% improvement in on-time project delivery and clearer goal setting, by simplifying complex technical concepts for non-technical stakeholders through visual aids and open discussions. (Visio, Miro)
+      
+
+  - company: SIEMENS
+    title: Student Intern
+    location: Pune, India
+    dates: August 2021 – June 2022
+    highlights:
+      - Integrated HashiCorp Vault with Teamcenter, effectively managing over 10,000 secrets for all tenants by designing the vault schema and enabling authentication methods such as Kubernetes, AWS, and GitLab. (HashiCorp Vault)
+      - Achieved a 23\% improvement in query performance, as measured by a significant reduction in execution time, by analyzing and optimizing SQL queries through indexing frequently accessed columns, minimizing JOIN operations, and evaluating execution plans. (SQL)
+
+education:
+  institution: Vishwakarma Institute of Technology
+  degree: BTech in Computer Engineering
+  graduation_year: July 2022
+  cgpa: 9.49/10
+  coursework: Data Structures, Algorithms, Artificial Intelligence, Data Science, System Software
+
+projects:
+  - name: AI Chatbot for Knowledge Management
+    year: '2024'
+    highlights:
+      - Designed and developed a completely local retrieval-augmented generation (RAG) chatbot from scratch to gain hands-on experience with generative AI technologies.
+      - Enabled users to interact with PDF documents used open LLM (Llama 3.1), LangChain and Streamlit. Implemented advanced techniques such as reranking and semantic chunking to enhance information retrieval by 40\%.
+
+  - name: Multi-Objective E-commerce Recommender System
+    year: '2023'
+    highlights:
+      - Achieved Top 6\% in the OTTO Recommender System competition on Kaggle, with a weight-averaged Recall@150 of 0.6339 using a two-stage recommender system.
+
+skill_set:
+  Problem Solving \& Debugging Skills: [370+ Problems Solved on LeetCode in C++]
+  Programming: [C++, Python, Javascript, Java]
+  Frameworks \& Libraries: [Spring, Node.js, React.js, Redux]
+  Cloud \& DevOps: [AWS, Docker, AWS EKS, Terraform, Ansible, GitLab CI/CD]
+  Database Systems: [Aurora MySQL, Dynamodb (NoSQL), Opensearch, Elasticsearch]

@@ -1,0 +1,95 @@
+
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont {{ name }}}
+        
+        \vspace{0.3 cm}
+        \normalsize
+        {{ "\\mbox{{\\color{black}\\footnotesize\\faMapMarker*}\\hspace*{0.13cm}" }}{{ location }}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:{{ email }}}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}{{ email }}}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:{{ phone }}}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}{{ phone }}}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{ {{ linkedin }} }{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}{{ linkedin_text }}}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{ {{ github }} }{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}{{ github_text }}}}%
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+    \section{Experience}
+
+    {% for job in experience %}
+        \begin{twocolentry}{
+            \textit{{ "{" + job.location + "}" }}
+            
+            \textit{{ "{" + job.dates + "}" }}}
+            
+            \textbf{{ "{" + job.title + "}" }}
+            
+            \textbf{{ "{" + job.company + "}" }}
+        \end{twocolentry}
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                {% for point in job.highlights %}
+                \item {{ point }}
+                {% endfor %}
+            \end{highlights}
+        \end{onecolentry}
+        \vspace{0.2 cm}
+    {% endfor %}
+
+    \section{Education}
+    \begin{twocolentry}{
+        \textit{{ "{" + education.graduation_year + "}" }}}
+        \textbf{{ "{" + education.institution + "}" }}
+        \textit{{ "{" + education.degree + "}" }}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item CGPA: {{ education.cgpa }}
+            \item \textbf{Coursework:} {{ education.coursework }}
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Projects}
+    {% for project in projects %}
+    \begin{twocolentry}{
+    \textit{{ "{" + project.year + "}" }}}
+        \textbf{{ "{" + project.name + "}" }}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            {% for point in project.highlights %}
+            \item {{ point }}
+            {% endfor %}
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+    {% endfor %}
+
+    \section{Skills}
+    {% for category, skills in skill_set.items() %}
+        \begin{onecolentry}
+            \textbf{{ "{" +  category + "|}" }}{{ skills | join(", ") }}
+        \end{onecolentry}
+        \vspace{0.2 cm}
+    {% endfor %}
+
+\end{document}
