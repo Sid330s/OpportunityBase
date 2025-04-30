@@ -1,41 +1,67 @@
 import os
-import argparse
+import sys
 import smtplib
 import yaml
-from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from email.utils import formataddr, make_msgid
 
-# Load environment variables
-load_dotenv()
-SENDER_EMAIL = os.getenv('SENDER_EMAIL')
-SENDER_NAME = os.getenv('SENDER_NAME')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+SENDER_EMAIL = os.environ['SENDER_EMAIL']
+SENDER_NAME = os.environ['SENDER_NAME']
+EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 smtp_server = "smtp.gmail.com"
 smtp_port = 587
 
-# Argument parsing
-parser = argparse.ArgumentParser(description="Send customized emails.")
-parser.add_argument('--emails', type=str, required=True, help="Comma separated list of emails.")
-args = parser.parse_args()
-input_emails = [email.strip() for email in args.emails.split(',')]
+input_file = "ResumeGenerator/input.yml"
 
-# Read jobs.yml
-with open('jobs.yml', 'r') as f:
-    jobs_data = yaml.safe_load(f)
+if not os.path.exists(input_file):
+    print(f"Error: {input_file} not found!")
+    sys.exit(1)
+
+
+def load_yaml(file_path):
+    """Load YAML data from a given file path."""
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file)
+
+
+jobs_file = "jobs.yml"
+input_file = "EmailSender/input.yml"
+
+if not os.path.exists(jobs_file):
+    print(f"Error: {jobs_file} not found!")
+    sys.exit(1)
+
+if not os.path.exists(input_file):
+    print(f"Error: {input_file} not found!")
+    sys.exit(1)
+
+jobs_data = load_yaml(jobs_file)
+input_data = load_yaml(input_file)
+
+recipients = []
+
 
 # Helper to find a person (recruiter/employee) by email
-def find_person(email):
-    for company in jobs_data['companies']:
+def find_recipients(input_data):
+    recipients = []
+    for jobs in jobs_data['job_ids']:
+        company_name = jobs['company']
+        job_id = jobs['job_id']
+        jd_link = jobs['jd_link']
+        if job_id not in input_data['job_ids']:
+            continue
         for role_type in ['recruiters', 'employees']:
-            for person in company.get(role_type, []):
-                if person['email'].lower() == email.lower():
-                    return company, person, role_type
-    return None, None, None
+            for person in jobs.get(role_type, []):
+                if person['email'].lower() == person['email']:
+                    recipients.append(
+                        (person['email'], person['name'], company_name, job_id,
+                         jd_link, role_type))
+    return recipients
+
 
 # Start SMTP session
 try:
@@ -43,53 +69,55 @@ try:
     server.starttls()
     server.login(SENDER_EMAIL, EMAIL_PASSWORD)
 
-    for recipient_email in input_emails:
-        company, person, role_type = find_person(recipient_email)
+    recipients = find_recipients(input_data)
 
-        if not company or not person:
-            print(f"⚠️ Email {recipient_email} not found in jobs.yml. Skipping.")
-            continue
+    for recipient in recipients:
 
-        company_name = company['name']
-        recipient_name = person['name']
-
-        # Use the first JD link (customize if needed)
-        jd_link = company['job_descriptions'][-1]['jd_link']
-
-        # Assume latest version is v1 (you can enhance by checking folder)
-        version = len(company['job_descriptions'])
+        recipient_email, recipient_name, company_name, job_id, jd_link, role_type = recipient
 
         # Prepare resume path
-        resume_filename = f"SiddharthKale{company_name}V{version}.pdf"
+        resume_filename = f"Siddharth_{company_name}_{job_id}.pdf"
         resume_path = os.path.join("Resumes", resume_filename)
 
         if not os.path.exists(resume_path):
-            print(f"❌ Resume file {resume_path} not found. Skipping {recipient_email}.")
+            print(
+                f"❌ Resume file {resume_path} not found. Skipping {recipient_email}."
+            )
             continue
 
-        # Compose email
+        # Python code to construct the email content
+
         subject = f"Exploring Opportunities at {company_name} – Siddharth Kale"
         body = f"""
-<body style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-  <p>Hi {recipient_name},</p>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Hi {recipient_name},</p>
 
-  <p>I'm <b>Siddharth Kale</b>, passionate about distributed systems, cloud infrastructure, and AI-based solutions.</p>
+          <p>I'm <strong>Siddharth Kale</strong>, a software engineer passionate about building scalable distributed systems and cloud-native services.</p>
 
-  <ul>
-    <li><b>Strong engineering:</b> Built scalable cloud services, led initiatives in AI, blockchain, and optimized multithreaded C++/Python backends.</li>
-    <li><b>Cloud ready:</b> Hands-on with AWS, Kubernetes, Terraform, Datadog, GCP, Azure.</li>
-    <li><b>Impactful projects:</b> Blockchain for COVID-era medical equipment trust, Teamcenter AI Chat, scalable CAD storage services.</li>
-  </ul>
+          <p>Here's a quick snapshot of my experience:</p>
+          <ul>
+            <li><strong>Distributed systems:</strong> Delivered resilient and performant backend services using Python and C++, focusing on concurrency and scalability.</li>
+            <li><strong>Cloud-native services & orchestration engines:</strong> Hands-on with AWS, Kubernetes, Docker, and Terraform, building and automating production-grade services and infrastructure.</li>
+            <li><strong>Core CS fundamentals:</strong> Achieved a CGPA of 9.49/10 with strong grasp over Operating Systems concepts including multi-threading, concurrency, memory management.</li>
+            <li><strong>Data Structures & Algorithms:</strong> Solved 370+ problems on LeetCode, developing strong skills in designing efficient and scalable systems.</li>
+          </ul>
 
-  <p>I'm excited about the job <b>{jd_link}</b> at <b>{company_name}</b> and would love to connect further!</p>
+          <p>I strongly value <strong>empathy, collaboration, and humility</strong>. With solid technical chops and a team-first mindset, I aim to build not just good code, but better culture. I thrive in environments where engineers support one another, communicate openly, and ship meaningful software together—just like <strong>{company_name}</strong>'s mission demands.</p>
 
-  <p>Thank you for your time and consideration!</p>
-  
-  <p>Best,<br>
-  Siddharth Kale<br>
-  <a href="https://your-portfolio-link.com" target="_blank">Portfolio</a></p>
-</body>
-"""
+          <p>I'm excited about the opportunity and would love to explore how I can contribute to your team.</p>
+
+          <p>Thanks for your time and consideration. Looking forward to connecting!</p>
+
+          <p>Best regards,<br>
+          Siddharth Kale<br>
+          <a href="mailto:siddharth.kale918@gmail.com">siddharth.kale918@gmail.com</a><br>
+          <a href="https://www.linkedin.com/in/siddharth-kale-936922174/" target="_blank">LinkedIn</a> | 
+          <a href="https://github.com/Sid330s" target="_blank">GitHub</a>
+          </p>
+        </body>
+        """
+
+
 
         try:
             msg = MIMEMultipart()
@@ -104,7 +132,8 @@ try:
                 part = MIMEBase("application", "octet-stream")
                 part.set_payload(attachment.read())
                 encoders.encode_base64(part)
-                part.add_header("Content-Disposition", f"attachment; filename={resume_filename}")
+                part.add_header("Content-Disposition",
+                                f"attachment; filename={resume_filename}")
                 msg.attach(part)
 
             # Create custom Message-ID
@@ -113,7 +142,6 @@ try:
             # Send email
             server.sendmail(SENDER_EMAIL, recipient_email, msg.as_string())
             print(f"✅ Email sent to {recipient_email} ({company_name})")
-
 
         except Exception as e:
             print(f"❌ Failed to send to {recipient_email}: {e}")

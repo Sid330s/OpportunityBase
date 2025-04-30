@@ -50,10 +50,10 @@ projects:
       - Designed and developed a completely local retrieval-augmented generation (RAG) chatbot from scratch to gain hands-on experience with generative AI technologies.
       - Enabled users to interact with PDF documents used open LLM (Llama 3.1), LangChain and Streamlit. Implemented advanced techniques such as reranking and semantic chunking to enhance information retrieval by 40\%.
 
-  - name: Multi-Objective E-commerce Recommender System
-    year: '2023'
+  - name: Chain4India
+    year: '2021'
     highlights:
-      - Achieved Top 6\% in the OTTO Recommender System competition on Kaggle, with a weight-averaged Recall@150 of 0.6339 using a two-stage recommender system.
+      -  Supply Chain Management using Hyperledger Sawtooth, Javascript, Google Maps API for PPE kits and Masks. It led to increased student participation and raised 2187$ from IEEE Humanitarian Technologies Board.
 
 skill_set:
   Problem Solving \& Debugging Skills: [370+ Problems Solved on LeetCode in C++]
